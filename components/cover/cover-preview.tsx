@@ -25,10 +25,7 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
         <div className="relative flex h-full w-full flex-col px-[72px] py-[72px]">
           {/* Header with Institution Logo Area */}
           <div className="mb-8 text-center">
-            {/* Logo placeholder - would be replaced with actual timbre */}
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#1e3a5f] bg-[#1e3a5f]/10">
-              <span className="text-2xl font-bold text-[#1e3a5f]">UF</span>
-            </div>
+
             <p
               className="text-sm font-bold uppercase tracking-wide text-[#1e3a5f]"
               style={{ fontSize: "14px", lineHeight: "1.4" }}
