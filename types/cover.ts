@@ -8,7 +8,7 @@ export interface CoverData {
   coadvisor?: string
   discipline?: string
   professor?: string
-  workType: "tcc" | "relatorio" | "artigo" | "projeto" | "atividade"
+  workType: "tcc" | "relatorio" | "artigo" | "projeto" | "atividade" | "ted"
   city: string
   year: string
   semester?: string
@@ -25,6 +25,7 @@ export const workTypeLabels: Record<CoverData["workType"], string> = {
   artigo: "Artigo Científico",
   projeto: "Projeto Integrador",
   atividade: "Atividade Avaliativa",
+  ted: "Trabalho Discente Efetivo (TED)",
 }
 
 export const defaultCoverData: CoverData = {
