@@ -170,7 +170,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
   // Description for title page
   const descriptionText = isTCC
     ? `Trabalho de Conclusão de Curso apresentado ao Curso de ${data.courseName} do ${data.institutionName}, como requisito parcial para obtenção do título de Tecnólogo em ${data.courseName.split(" ").slice(-2).join(" ")}.`
-    : `${workTypeLabels[data.workType]} apresentado(a) à disciplina de ${data.discipline || "[Disciplina]"} do Curso de ${data.courseName} do ${data.institutionName}, como requisito parcial para obtenção de nota.`
+    : `${workTypeLabels[data.workType] || "Trabalho"} submetido à coordenação do curso de ${data.courseName} do ${data.institutionName} para a obtenção de nota na disciplina de ${data.discipline || "[Disciplina]"}.`
 
   const descriptionParagraph = new Paragraph({
     alignment: AlignmentType.JUSTIFIED,
@@ -273,24 +273,48 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
           },
         },
         children: [
+          // Capa (Page 1)
           ...headerChildren,
-          new Paragraph({ spacing: { before: 600 } }),
-          ...authorParagraphs,
+          new Paragraph({ spacing: { before: 800 } }),
+          
+          // Work Type Label (Centered)
+          new Paragraph({
+            alignment: AlignmentType.CENTER,
+            children: [
+              new TextRun({
+                text: workTypeLabels[data.workType] || "PRODUTO MÍNIMO VIÁVEL - MVP",
+                size: 28,
+                font: "Times New Roman",
+                allCaps: true,
+              }),
+            ],
+          }),
+
+          new Paragraph({ spacing: { before: 800 } }),
           titleParagraph,
           ...(subtitleParagraph ? [subtitleParagraph] : []),
+          
+          new Paragraph({ spacing: { before: 400 } }),
+          ...authorParagraphs,
+          
           new Paragraph({ spacing: { before: 2400 } }),
           ...footerParagraphs,
+          
           new Paragraph({
             children: [new PageBreak()],
           }),
-          // Title Page
-          ...headerChildren,
-          new Paragraph({ spacing: { before: 600 } }),
+
+          // Folha de Rosto (Page 2)
           ...authorParagraphs,
+          new Paragraph({ spacing: { before: 1200 } }),
+          
           titleParagraph,
           ...(subtitleParagraph ? [subtitleParagraph] : []),
+          
+          new Paragraph({ spacing: { before: 800 } }),
           descriptionParagraph,
           ...(advisorParagraph ? [advisorParagraph] : []),
+          
           new Paragraph({ spacing: { before: 1200 } }),
           ...footerParagraphs,
         ],

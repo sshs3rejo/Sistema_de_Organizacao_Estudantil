@@ -27,101 +27,110 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
         {/* A4 Page Container */}
         <div className="relative flex h-full w-full flex-col px-[72px] py-[72px]">
           {/* Header with Institution Logo Area */}
-          <div className="mb-8 text-center">
+          {/* Layout for COVER */}
+          {type === "cover" && (
+            <>
+              {/* Header: Institution + Course */}
+              <div className="mb-20 text-center">
+                <p className="text-sm font-bold uppercase tracking-wide text-[#1e3a5f]" style={{ fontSize: "14px", lineHeight: "1.4" }}>
+                  {data.institutionName}
+                </p>
+                <p className="mt-1 text-sm uppercase text-gray-700" style={{ fontSize: "12px" }}>
+                  {data.courseName}
+                </p>
+              </div>
 
-            <p
-              className="text-sm font-bold uppercase tracking-wide text-[#1e3a5f]"
-              style={{ fontSize: "14px", lineHeight: "1.4" }}
-            >
-              {data.institutionName}
-            </p>
-            <p
-              className="mt-1 text-sm uppercase text-gray-700"
-              style={{ fontSize: "12px" }}
-            >
-              {data.courseName}
-            </p>
-          </div>
+              {/* Middle Section: Work Type + Title + Authors */}
+              <div className="my-auto flex flex-col gap-12 text-center">
+                <div className="space-y-2">
+                  <p className="uppercase tracking-widest text-gray-600" style={{ fontSize: "14px" }}>
+                    {workTypeLabels[data.workType] || "PRODUTO MÍNIMO VIÁVEL - MVP"}
+                  </p>
+                </div>
 
-          {/* Authors Section */}
-          <div className="mb-auto text-center">
-            {data.authors.filter(Boolean).map((author, index) => (
-              <p
-                key={index}
-                className="font-bold uppercase"
-                style={{ fontSize: "14px", lineHeight: "1.6" }}
-              >
-                {author}
-              </p>
-            ))}
-          </div>
+                <div className="space-y-4">
+                  <h1 className="font-bold uppercase" style={{ fontSize: "16px", lineHeight: "1.5" }}>
+                    {data.title || "TÍTULO DO TRABALHO"}
+                  </h1>
+                  {data.subtitle && (
+                    <h2 className="font-normal" style={{ fontSize: "14px", lineHeight: "1.5" }}>
+                      {data.subtitle}
+                    </h2>
+                  )}
+                </div>
 
-          {/* Title Section - Centered */}
-          <div className="my-auto text-center">
-            <h1
-              className="font-bold uppercase"
-              style={{ fontSize: "16px", lineHeight: "1.5" }}
-            >
-              {data.title || "TÍTULO DO TRABALHO"}
-            </h1>
-            {data.subtitle && (
-              <h2
-                className="mt-2 font-normal"
-                style={{ fontSize: "14px", lineHeight: "1.5" }}
-              >
-                {data.subtitle}
-              </h2>
-            )}
-          </div>
+                <div className="space-y-2">
+                  {data.authors.filter(Boolean).map((author, index) => (
+                    <p key={index} className="font-bold uppercase" style={{ fontSize: "14px", lineHeight: "1.6" }}>
+                      {author}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
-          {/* Title Page specific - Work description */}
+          {/* Layout for TITLE PAGE */}
           {type === "titlePage" && (
-            <div className="my-8 ml-auto w-[60%] text-justify">
-              <p style={{ fontSize: "12px", lineHeight: "1.5" }}>
-                {isTCC ? (
-                  <>
-                    Trabalho de Conclusao de Curso apresentado ao Curso de{" "}
-                    {data.courseName} do {data.institutionName}, como requisito
-                    parcial para obtencao do titulo de Tecnologo em{" "}
-                    {data.courseName.split(" ").slice(-2).join(" ")}.
-                  </>
-                ) : (
-                  <>
-                    {workTypeLabels[data.workType]} apresentado(a) a disciplina
-                    de {data.discipline || "[Disciplina]"} do Curso de{" "}
-                    {data.courseName} do {data.institutionName}, como requisito
-                    parcial para obtencao de nota.
-                  </>
+            <>
+              {/* Top: Authors */}
+              <div className="mb-20 text-center">
+                {data.authors.filter(Boolean).map((author, index) => (
+                  <p key={index} className="font-bold uppercase" style={{ fontSize: "14px", lineHeight: "1.6" }}>
+                    {author}
+                  </p>
+                ))}
+              </div>
+
+              {/* Middle: Title */}
+              <div className="my-auto text-center">
+                <h1 className="font-bold uppercase" style={{ fontSize: "16px", lineHeight: "1.5" }}>
+                  {data.title || "TÍTULO DO TRABALHO"}
+                </h1>
+                {data.subtitle && (
+                  <h2 className="mt-2 font-normal" style={{ fontSize: "14px", lineHeight: "1.5" }}>
+                    {data.subtitle}
+                  </h2>
                 )}
-              </p>
-              {(data.advisor || data.professor) && (
-                <p className="mt-4" style={{ fontSize: "12px" }}>
+              </div>
+
+              {/* Description Block */}
+              <div className="my-8 ml-auto w-[65%] text-justify">
+                <p style={{ fontSize: "12px", lineHeight: "1.5" }}>
                   {isTCC ? (
                     <>
-                      <strong>Orientador(a):</strong> {data.advisor}
-                      {data.coadvisor && (
-                        <>
-                          <br />
-                          <strong>Coorientador(a):</strong> {data.coadvisor}
-                        </>
-                      )}
+                      Trabalho de Conclusao de Curso apresentado ao Curso de{" "}
+                      {data.courseName} do {data.institutionName}, como requisito
+                      parcial para obtencao do titulo de Tecnologo em{" "}
+                      {data.courseName.split(" ").slice(-2).join(" ")}.
                     </>
                   ) : (
                     <>
-                      <strong>Professor(a):</strong> {data.professor}
+                      {workTypeLabels[data.workType]} submetido à coordenação do curso de{" "}
+                      {data.courseName} do {data.institutionName} para a obtenção de nota na disciplina de{" "}
+                      {data.discipline || "[Disciplina]"}.
                     </>
                   )}
                 </p>
-              )}
-            </div>
+                {(data.advisor || data.professor || data.coadvisor) && (
+                  <div className="mt-4 space-y-1" style={{ fontSize: "12px" }}>
+                    {isTCC ? (
+                      <>
+                        <p><strong>Orientador(a):</strong> {data.advisor}</p>
+                        {data.coadvisor && <p><strong>Coorientador(a):</strong> {data.coadvisor}</p>}
+                      </>
+                    ) : (
+                      <p><strong>Professor(a):</strong> {data.professor}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </>
           )}
 
-          {/* Footer - City and Year */}
+          {/* Bottom: City and Year (Shared) */}
           <div className="mt-auto text-center">
-            <p
-              className="uppercase"
-              style={{ fontSize: "14px", lineHeight: "1.6" }}
-            >
+            <p className="uppercase" style={{ fontSize: "14px", lineHeight: "1.6" }}>
               {data.city}
             </p>
             <p style={{ fontSize: "14px" }}>{data.year}</p>
