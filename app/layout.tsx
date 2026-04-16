@@ -9,6 +9,10 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'Sistema de Eventos Acadêmicos - ADS',
   description: 'Sistema de Gerenciamento de Eventos Acadêmicos para o curso de ADS',
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({
