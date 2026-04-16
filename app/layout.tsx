@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Sistema de Eventos Acadêmicos',
-  description: 'Sistema de Gerenciamento de Eventos Acadêmicos',
+  title: 'Sistema de Organização Estudantil',
+  description: 'Seu espaço central para gerenciar aulas, trabalhos, provas e estudos.',
   icons: {
     icon: '/icon.svg',
     apple: '/apple-icon.png',

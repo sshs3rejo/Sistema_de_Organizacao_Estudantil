@@ -10,11 +10,12 @@ export interface Event {
   category: EventCategory
   organizer: string
   maxParticipants?: number
+  status: "pending" | "completed"
   createdAt: Date
   updatedAt: Date
 }
 
-export type EventCategory = "palestra" | "workshop" | "semana_academica" | "outros"
+export type EventCategory = "aula" | "trabalho" | "prova" | "estudo" | "outros"
 
 export interface CreateEventInput {
   title: string
@@ -26,6 +27,7 @@ export interface CreateEventInput {
   category: EventCategory
   organizer: string
   maxParticipants?: number
+  status?: "pending" | "completed"
 }
 
 export interface UpdateEventInput extends Partial<CreateEventInput> {
@@ -33,15 +35,17 @@ export interface UpdateEventInput extends Partial<CreateEventInput> {
 }
 
 export const categoryLabels: Record<EventCategory, string> = {
-  palestra: "Palestra",
-  workshop: "Workshop",
-  semana_academica: "Semana Acadêmica",
+  aula: "Aula",
+  trabalho: "Trabalho",
+  prova: "Prova",
+  estudo: "Estudo",
   outros: "Outros",
 }
 
 export const categoryColors: Record<EventCategory, string> = {
-  palestra: "bg-chart-1 text-primary-foreground",
-  workshop: "bg-chart-2 text-primary-foreground",
-  semana_academica: "bg-chart-3 text-primary-foreground",
-  outros: "bg-chart-4 text-primary-foreground",
+  aula: "bg-blue-500 text-white",
+  trabalho: "bg-orange-500 text-white",
+  prova: "bg-red-500 text-white",
+  estudo: "bg-green-500 text-white",
+  outros: "bg-gray-500 text-white",
 }

@@ -51,9 +51,10 @@ const eventFormSchema = z.object({
   startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Horário inválido"),
   endTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Horário inválido"),
   location: z.string().min(3, "O local deve ter pelo menos 3 caracteres"),
-  category: z.enum(["palestra", "workshop", "semana_academica", "outros"]),
-  organizer: z.string().min(3, "O organizador deve ter pelo menos 3 caracteres"),
+  category: z.enum(["aula", "trabalho", "prova", "estudo", "outros"]),
+  organizer: z.string().min(3, "A responsabilidade/organizador deve ter pelo menos 3 caracteres"),
   maxParticipants: z.number().min(1).optional(),
+  status: z.enum(["pending", "completed"]).default("pending"),
 })
 
 type EventFormValues = z.infer<typeof eventFormSchema>
@@ -81,9 +82,10 @@ export function EventForm({
       startTime: "08:00",
       endTime: "12:00",
       location: "",
-      category: "palestra",
+      category: "aula",
       organizer: "",
       maxParticipants: undefined,
+      status: "pending",
     },
   })
 
@@ -99,6 +101,7 @@ export function EventForm({
         category: event.category,
         organizer: event.organizer,
         maxParticipants: event.maxParticipants,
+        status: event.status || "pending",
       })
     } else {
       form.reset({
@@ -108,9 +111,10 @@ export function EventForm({
         startTime: "08:00",
         endTime: "12:00",
         location: "",
-        category: "palestra",
+        category: "aula",
         organizer: "",
         maxParticipants: undefined,
+        status: "pending",
       })
     }
   }, [event, form])
@@ -125,12 +129,12 @@ export function EventForm({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {event ? "Editar Evento" : "Novo Evento"}
+            {event ? "Editar Registro" : "Novo Registro"}
           </DialogTitle>
           <DialogDescription>
             {event
-              ? "Atualize as informações do evento abaixo."
-              : "Preencha as informações para criar um novo evento."}
+              ? "Atualize as informações do seu registro acadêmico abaixo."
+              : "Preencha as informações para criar um novo compromisso ou tarefa."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -142,7 +146,7 @@ export function EventForm({
                 <FormItem>
                   <FormLabel>Título</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome do evento" {...field} />
+                    <Input placeholder="Ex: Prova de Cálculo, Entrega de Trabalho..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,10 +158,10 @@ export function EventForm({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Descrição / Notas</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Descreva o evento..."
+                      placeholder="Detalhes sobre a tarefa ou evento..."
                       className="resize-none"
                       rows={3}
                       {...field}
@@ -269,29 +273,15 @@ export function EventForm({
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Local</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Onde será realizado o evento" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField
                 control={form.control}
-                name="organizer"
+                name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Organizador</FormLabel>
+                    <FormLabel>Local</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nome do organizador" {...field} />
+                      <Input placeholder="Local ou Link (Meet, Zoom...)" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -300,28 +290,40 @@ export function EventForm({
 
               <FormField
                 control={form.control}
-                name="maxParticipants"
+                name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Máx. Participantes (opcional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Ex: 100"
-                        {...field}
-                        value={field.value || ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value ? parseInt(e.target.value) : undefined
-                          )
-                        }
-                      />
-                    </FormControl>
+                    <FormLabel>Status</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Status da tarefa" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="pending">Pendente</SelectItem>
+                        <SelectItem value="completed">Concluído</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="organizer"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Responsável / Organizador</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Quem está organizando?" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter>
               <Button
@@ -332,7 +334,7 @@ export function EventForm({
                 Cancelar
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Salvando..." : event ? "Salvar Alterações" : "Criar Evento"}
+                {isLoading ? "Salvando..." : event ? "Salvar Alterações" : "Criar Registro"}
               </Button>
             </DialogFooter>
           </form>

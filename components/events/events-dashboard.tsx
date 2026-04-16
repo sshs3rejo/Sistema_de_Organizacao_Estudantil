@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useTransition } from "react"
-import { Plus, GraduationCap, FileText, Calendar } from "lucide-react"
+import { Plus, Calendar, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { EventFilters } from "./event-filters"
 import { EventsGrid } from "./events-grid"
@@ -89,12 +89,12 @@ export function EventsDashboard({ initialEvents }: EventsDashboardProps) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                <GraduationCap className="h-6 w-6 text-primary-foreground" />
+                <Calendar className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">Eventos Acadêmicos</h1>
+                <h1 className="text-xl font-bold">Organização Estudantil</h1>
                 <p className="text-sm text-muted-foreground">
-                  Sistema Acadêmico
+                  Meu Espaço Acadêmico
                 </p>
               </div>
             </div>
@@ -114,7 +114,7 @@ export function EventsDashboard({ initialEvents }: EventsDashboardProps) {
               </Link>
               <Button onClick={handleOpenNewEvent}>
                 <Plus className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Novo Evento</span>
+                <span className="hidden sm:inline">Novo Registro</span>
               </Button>
             </div>
           </div>
@@ -137,7 +137,7 @@ export function EventsDashboard({ initialEvents }: EventsDashboardProps) {
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
               {filteredEvents.length}{" "}
-              {filteredEvents.length === 1 ? "evento encontrado" : "eventos encontrados"}
+              {filteredEvents.length === 1 ? "registro encontrado" : "registros encontrados"}
             </p>
           </div>
 

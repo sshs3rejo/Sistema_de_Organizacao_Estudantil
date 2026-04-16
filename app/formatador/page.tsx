@@ -2,10 +2,11 @@ import { CoverGenerator } from "@/components/cover/cover-generator"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, GraduationCap } from "lucide-react"
 import Link from "next/link"
+import { Metadata } from "next"
 
-export const metadata = {
-  title: "Formatador de Capas - Sistema de Eventos Acadêmicos",
-  description: "Gere capas e folhas de rosto para trabalhos acadêmicos seguindo o padrão do UniFacema",
+export const metadata: Metadata = {
+  title: "Formatador de Capas - Organização Estudantil",
+  description: "Gere capas e folhas de rosto para seus trabalhos acadêmicos.",
 }
 
 export default function FormatadorPage() {
