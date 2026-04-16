@@ -102,16 +102,16 @@ export function AcademicNotifications() {
           <span className="sr-only">Notificacoes do Calendario Academico</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+      <SheetContent className="w-full p-6 sm:max-w-md">
+        <SheetHeader className="px-0">
+          <SheetTitle className="flex items-center gap-2 text-xl">
             <Calendar className="h-5 w-5 text-primary" />
-            Calendario Academico 2026.1
+            Calendário Acadêmico 2026.1
           </SheetTitle>
         </SheetHeader>
 
-        <ScrollArea className="mt-6 h-[calc(100vh-120px)]">
-          <div className="space-y-6 pr-4">
+        <ScrollArea className="mt-8 h-[calc(100vh-120px)]">
+          <div className="space-y-6 pr-4 pb-8">
             {/* Today's Events */}
             {todayEvents.length > 0 && (
               <div className="space-y-3">
