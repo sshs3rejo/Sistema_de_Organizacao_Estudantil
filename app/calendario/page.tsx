@@ -8,7 +8,7 @@ import Link from "next/link"
 import { academicCalendar2026_1 } from "@/lib/academic-calendar-data"
 
 export const metadata: Metadata = {
-  title: "Calendário Acadêmico - Sistema de Eventos ADS",
+  title: "Calendário Acadêmico - Sistema de Eventos Acadêmicos",
   description: "Calendário acadêmico 2026.1 com todas as datas importantes do semestre",
 }
 

@@ -31,7 +31,7 @@ export const workTypeLabels: Record<CoverData["workType"], string> = {
 
 export const defaultCoverData: CoverData = {
   institutionName: "CENTRO UNIVERSITÁRIO UNIFACEMA",
-  courseName: "ANÁLISE E DESENVOLVIMENTO DE SISTEMAS",
+  courseName: "[NOME DO CURSO]",
   title: "",
   subtitle: "",
   authors: [""],

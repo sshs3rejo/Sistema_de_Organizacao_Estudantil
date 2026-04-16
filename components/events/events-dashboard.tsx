@@ -94,7 +94,7 @@ export function EventsDashboard({ initialEvents }: EventsDashboardProps) {
               <div>
                 <h1 className="text-xl font-bold">Eventos Acadêmicos</h1>
                 <p className="text-sm text-muted-foreground">
-                  Curso de ADS
+                  Sistema Acadêmico
                 </p>
               </div>
             </div>
