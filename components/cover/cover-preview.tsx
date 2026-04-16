@@ -19,6 +19,9 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
         className="mx-auto aspect-[210/297] w-full max-w-[595px] bg-white text-black shadow-2xl"
         style={{
           fontFamily: "Times New Roman, serif",
+          backgroundImage: "url('/assets/timbre.png')",
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
         }}
       >
         {/* A4 Page Container */}

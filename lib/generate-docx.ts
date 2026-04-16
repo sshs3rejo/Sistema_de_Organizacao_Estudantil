@@ -33,7 +33,40 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
     right: convertMillimetersToTwip(30),
   }
 
+  // Fetch the timbre image
+  let timbreBuffer: ArrayBuffer | null = null
+  try {
+    const response = await fetch("/assets/timbre.png")
+    timbreBuffer = await response.arrayBuffer()
+  } catch (error) {
+    console.error("Could not load timbre image:", error)
+  }
+
   const isTCC = data.workType === "tcc"
+
+  // Create background image for every page (via Header)
+  const backgroundParagraph = timbreBuffer 
+    ? new Paragraph({
+        children: [
+          new ImageRun({
+            data: timbreBuffer,
+            transformation: {
+              width: 794, // A4 Width in px at 96 DPI
+              height: 1123, // A4 Height in px at 96 DPI
+            },
+            floating: {
+              horizontalPosition: {
+                offset: 0,
+              },
+              verticalPosition: {
+                offset: 0,
+              },
+              behindDocument: true,
+            },
+          }),
+        ],
+      })
+    : null
 
   // Create header with logo (if available)
   const headerChildren: Paragraph[] = []
@@ -225,6 +258,11 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
     sections: [
       // Cover Page
       {
+        headers: {
+          default: backgroundParagraph ? new Header({
+            children: [backgroundParagraph],
+          }) : undefined,
+        },
         properties: {
           page: {
             margin: pageMargin,
