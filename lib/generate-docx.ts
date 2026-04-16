@@ -263,7 +263,8 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
   // Generate and save the document
   const { Packer } = await import("docx")
   const blob = await Packer.toBlob(doc)
-  const fileName = `${data.title || "documento"}_${data.workType}_${data.year}.docx`
+  const titlePart = data.title || "Capa_Academica"
+  const fileName = `${titlePart}.docx`
     .replace(/[^a-zA-Z0-9_.-]/g, "_")
     .replace(/_+/g, "_")
   

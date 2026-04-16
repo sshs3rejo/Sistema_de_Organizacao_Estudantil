@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -18,46 +17,23 @@ import type { CoverData } from "@/types/cover"
 import { defaultCoverData, workTypeLabels } from "@/types/cover"
 
 interface CoverFormProps {
-  onGenerate: (data: CoverData) => void
+  data: CoverData
+  updateField: <K extends keyof CoverData>(field: K, value: CoverData[K]) => void
+  updateAuthor: (index: number, value: string) => void
+  addAuthor: () => void
+  removeAuthor: (index: number) => void
 }
 
-export function CoverForm({ onGenerate }: CoverFormProps) {
-  const [formData, setFormData] = useState<CoverData>(defaultCoverData)
-
-  const updateField = <K extends keyof CoverData>(
-    field: K,
-    value: CoverData[K]
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const addAuthor = () => {
-    setFormData((prev) => ({ ...prev, authors: [...prev.authors, ""] }))
-  }
-
-  const removeAuthor = (index: number) => {
-    if (formData.authors.length > 1) {
-      setFormData((prev) => ({
-        ...prev,
-        authors: prev.authors.filter((_, i) => i !== index),
-      }))
-    }
-  }
-
-  const updateAuthor = (index: number, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      authors: prev.authors.map((author, i) => (i === index ? value : author)),
-    }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onGenerate(formData)
-  }
+export function CoverForm({ 
+  data, 
+  updateField, 
+  updateAuthor, 
+  addAuthor, 
+  removeAuthor 
+}: CoverFormProps) {
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="space-y-6">
       <Card className="border-border/50 bg-card/50">
         <CardHeader>
           <CardTitle className="text-lg">Informacoes da Instituicao</CardTitle>
@@ -67,7 +43,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="institutionName">Nome da Instituicao</Label>
             <Input
               id="institutionName"
-              value={formData.institutionName}
+              value={data.institutionName}
               onChange={(e) => updateField("institutionName", e.target.value)}
               placeholder="CENTRO UNIVERSITÁRIO UNIFACEMA"
             />
@@ -76,7 +52,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="courseName">Nome do Curso</Label>
             <Input
               id="courseName"
-              value={formData.courseName}
+              value={data.courseName}
               onChange={(e) => updateField("courseName", e.target.value)}
               placeholder="ANÁLISE E DESENVOLVIMENTO DE SISTEMAS"
             />
@@ -92,7 +68,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
           <div className="space-y-2">
             <Label htmlFor="workType">Tipo de Trabalho</Label>
             <Select
-              value={formData.workType}
+              value={data.workType}
               onValueChange={(value: CoverData["workType"]) =>
                 updateField("workType", value)
               }
@@ -114,7 +90,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="title">Titulo do Trabalho</Label>
             <Input
               id="title"
-              value={formData.title}
+              value={data.title}
               onChange={(e) => updateField("title", e.target.value)}
               placeholder="Digite o título do trabalho"
               required
@@ -125,7 +101,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="subtitle">Subtitulo (opcional)</Label>
             <Input
               id="subtitle"
-              value={formData.subtitle || ""}
+              value={data.subtitle || ""}
               onChange={(e) => updateField("subtitle", e.target.value)}
               placeholder="Digite o subtítulo, se houver"
             />
@@ -135,7 +111,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="discipline">Disciplina</Label>
             <Input
               id="discipline"
-              value={formData.discipline || ""}
+              value={data.discipline || ""}
               onChange={(e) => updateField("discipline", e.target.value)}
               placeholder="Ex: Engenharia de Software II"
             />
@@ -145,7 +121,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="professor">Professor(a)</Label>
             <Input
               id="professor"
-              value={formData.professor || ""}
+              value={data.professor || ""}
               onChange={(e) => updateField("professor", e.target.value)}
               placeholder="Nome do(a) professor(a)"
             />
@@ -168,7 +144,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
           </Button>
         </CardHeader>
         <CardContent className="space-y-3">
-          {formData.authors.map((author, index) => (
+          {data.authors.map((author, index) => (
             <div key={index} className="flex gap-2">
               <Input
                 value={author}
@@ -176,7 +152,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
                 placeholder={`Nome do autor ${index + 1}`}
                 required
               />
-              {formData.authors.length > 1 && (
+              {data.authors.length > 1 && (
                 <Button
                   type="button"
                   variant="ghost"
@@ -201,7 +177,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="advisor">Orientador(a)</Label>
             <Input
               id="advisor"
-              value={formData.advisor || ""}
+              value={data.advisor || ""}
               onChange={(e) => updateField("advisor", e.target.value)}
               placeholder="Nome do(a) orientador(a)"
             />
@@ -210,7 +186,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="coadvisor">Coorientador(a) (opcional)</Label>
             <Input
               id="coadvisor"
-              value={formData.coadvisor || ""}
+              value={data.coadvisor || ""}
               onChange={(e) => updateField("coadvisor", e.target.value)}
               placeholder="Nome do(a) coorientador(a)"
             />
@@ -228,7 +204,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
               <Label htmlFor="city">Cidade</Label>
               <Input
                 id="city"
-                value={formData.city}
+                value={data.city}
                 onChange={(e) => updateField("city", e.target.value)}
                 placeholder="Caxias - MA"
               />
@@ -237,7 +213,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
               <Label htmlFor="year">Ano</Label>
               <Input
                 id="year"
-                value={formData.year}
+                value={data.year}
                 onChange={(e) => updateField("year", e.target.value)}
                 placeholder="2026"
               />
@@ -247,7 +223,7 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
             <Label htmlFor="semester">Semestre</Label>
             <Input
               id="semester"
-              value={formData.semester || ""}
+              value={data.semester || ""}
               onChange={(e) => updateField("semester", e.target.value)}
               placeholder="2026.1"
             />
@@ -255,9 +231,6 @@ export function CoverForm({ onGenerate }: CoverFormProps) {
         </CardContent>
       </Card>
 
-      <Button type="submit" className="w-full" size="lg">
-        Gerar Capa e Folha de Rosto
-      </Button>
-    </form>
+    </div>
   )
 }
