@@ -25,7 +25,12 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
         }}
       >
         {/* A4 Page Container */}
-        <div className="relative flex h-full w-full flex-col px-[72px] py-[72px]">
+        <div 
+          className="relative flex h-full w-full flex-col"
+          style={{
+            padding: "3cm 2cm 2cm 3cm", // ABNT: Top 3, Right 2, Bottom 2, Left 3
+          }}
+        >
           {/* Header with Institution Logo Area */}
           {/* Layout for COVER */}
           {type === "cover" && (

@@ -27,10 +27,10 @@ const UNIFACEMA_ORANGE = "E87722"
 
 export async function generateDocx(data: CoverData, logoBase64?: string) {
   const pageMargin = {
-    top: convertMillimetersToTwip(25),
+    top: convertMillimetersToTwip(30),
     bottom: convertMillimetersToTwip(20),
     left: convertMillimetersToTwip(30),
-    right: convertMillimetersToTwip(30),
+    right: convertMillimetersToTwip(20),
   }
 
   // Fetch the timbre image
@@ -98,9 +98,8 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         new TextRun({
           text: data.institutionName,
           bold: true,
-          size: 28,
+          size: 24, // 12pt
           font: "Times New Roman",
-          color: UNIFACEMA_BLUE,
           allCaps: true,
         }),
       ],
@@ -111,7 +110,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
       children: [
         new TextRun({
           text: data.courseName,
-          size: 24,
+          size: 24, // 12pt
           font: "Times New Roman",
           allCaps: true,
         }),
@@ -129,7 +128,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
           new TextRun({
             text: author,
             bold: true,
-            size: 28,
+            size: 24, // 12pt
             font: "Times New Roman",
             allCaps: true,
           }),
@@ -145,7 +144,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
       new TextRun({
         text: data.title || "TÍTULO DO TRABALHO",
         bold: true,
-        size: 32,
+        size: 24, // 12pt (Standard ABNT)
         font: "Times New Roman",
         allCaps: true,
       }),
@@ -160,7 +159,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         children: [
           new TextRun({
             text: data.subtitle,
-            size: 28,
+            size: 24, // 12pt
             font: "Times New Roman",
           }),
         ],
@@ -175,13 +174,13 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
   const descriptionParagraph = new Paragraph({
     alignment: AlignmentType.JUSTIFIED,
     indent: {
-      left: convertMillimetersToTwip(80),
+      left: convertMillimetersToTwip(80), // 8cm
     },
-    spacing: { before: 800, after: 200 },
+    spacing: { before: 800, after: 200, line: 240 }, // Single spacing (240 twips)
     children: [
       new TextRun({
         text: descriptionText,
-        size: 24,
+        size: 24, // 12pt (Can be 10pt or 12pt, 12pt is common)
         font: "Times New Roman",
       }),
     ],
@@ -194,7 +193,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         indent: {
           left: convertMillimetersToTwip(80),
         },
-        spacing: { before: 200, after: 800 },
+        spacing: { before: 200, after: 800, line: 240 }, // Single spacing
         children: [
           new TextRun({
             text: isTCC ? "Orientador(a): " : "Professor(a): ",
@@ -235,7 +234,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
       children: [
         new TextRun({
           text: data.city,
-          size: 28,
+          size: 24, // 12pt
           font: "Times New Roman",
           allCaps: true,
         }),
@@ -246,7 +245,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
       children: [
         new TextRun({
           text: data.year,
-          size: 28,
+          size: 24, // 12pt
           font: "Times New Roman",
         }),
       ],
