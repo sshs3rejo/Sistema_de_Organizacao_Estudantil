@@ -8,10 +8,11 @@ export interface CoverData {
   coadvisor?: string
   discipline?: string
   professor?: string
-  workType: "tcc" | "relatorio" | "artigo" | "projeto" | "atividade" | "ted"
+  workType: "tcc" | "relatorio" | "artigo" | "projeto" | "atividade" | "tde"
   city: string
   year: string
   semester?: string
+  fontFamily: "arial" | "times"
 }
 
 export interface TitlePageData extends CoverData {
@@ -25,7 +26,7 @@ export const workTypeLabels: Record<CoverData["workType"], string> = {
   artigo: "Artigo Científico",
   projeto: "Projeto Integrador",
   atividade: "Atividade Avaliativa",
-  ted: "Trabalho Discente Efetivo (TED)",
+  tde: "Trabalho Discente Efetivo (TDE)",
 }
 
 export const defaultCoverData: CoverData = {
@@ -42,4 +43,5 @@ export const defaultCoverData: CoverData = {
   city: "Caxias - MA",
   year: new Date().getFullYear().toString(),
   semester: "2026.1",
+  fontFamily: "times",
 }

@@ -66,6 +66,24 @@ export function CoverForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
+            <Label htmlFor="fontFamily">Fonte do Trabalho</Label>
+            <Select
+              value={data.fontFamily}
+              onValueChange={(value: "arial" | "times") =>
+                updateField("fontFamily", value)
+              }
+            >
+              <SelectTrigger id="fontFamily">
+                <SelectValue placeholder="Selecione a fonte" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="times">Times New Roman</SelectItem>
+                <SelectItem value="arial">Arial</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="workType">Tipo de Trabalho</Label>
             <Select
               value={data.workType}

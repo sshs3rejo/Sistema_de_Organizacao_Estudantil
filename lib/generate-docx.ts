@@ -43,6 +43,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
   }
 
   const isTCC = data.workType === "tcc"
+  const fontName = data.fontFamily === "arial" ? "Arial" : fontName
 
   // Create background image for every page (via Header)
   const backgroundParagraph = timbreBuffer 
@@ -99,7 +100,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
           text: data.institutionName,
           bold: true,
           size: 24, // 12pt
-          font: "Times New Roman",
+          font: fontName,
           allCaps: true,
         }),
       ],
@@ -111,7 +112,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         new TextRun({
           text: data.courseName,
           size: 24, // 12pt
-          font: "Times New Roman",
+          font: fontName,
           allCaps: true,
         }),
       ],
@@ -129,7 +130,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
             text: author,
             bold: true,
             size: 24, // 12pt
-            font: "Times New Roman",
+            font: fontName,
             allCaps: true,
           }),
         ],
@@ -145,7 +146,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         text: data.title || "TÍTULO DO TRABALHO",
         bold: true,
         size: 24, // 12pt (Standard ABNT)
-        font: "Times New Roman",
+        font: fontName,
         allCaps: true,
       }),
     ],
@@ -160,7 +161,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
           new TextRun({
             text: data.subtitle,
             size: 24, // 12pt
-            font: "Times New Roman",
+            font: fontName,
           }),
         ],
       })
@@ -181,7 +182,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
       new TextRun({
         text: descriptionText,
         size: 24, // 12pt (Can be 10pt or 12pt, 12pt is common)
-        font: "Times New Roman",
+        font: fontName,
       }),
     ],
   })
@@ -199,12 +200,12 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
             text: isTCC ? "Orientador(a): " : "Professor(a): ",
             bold: true,
             size: 24,
-            font: "Times New Roman",
+            font: fontName,
           }),
           new TextRun({
             text: isTCC ? data.advisor || "" : data.professor || "",
             size: 24,
-            font: "Times New Roman",
+            font: fontName,
           }),
           ...(isTCC && data.coadvisor
             ? [
@@ -212,13 +213,13 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
                   text: "\nCoorientador(a): ",
                   bold: true,
                   size: 24,
-                  font: "Times New Roman",
+                  font: fontName,
                   break: 1,
                 }),
                 new TextRun({
                   text: data.coadvisor,
                   size: 24,
-                  font: "Times New Roman",
+                  font: fontName,
                 }),
               ]
             : []),
@@ -235,7 +236,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         new TextRun({
           text: data.city,
           size: 24, // 12pt
-          font: "Times New Roman",
+          font: fontName,
           allCaps: true,
         }),
       ],
@@ -246,7 +247,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
         new TextRun({
           text: data.year,
           size: 24, // 12pt
-          font: "Times New Roman",
+          font: fontName,
         }),
       ],
     }),
@@ -283,7 +284,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
               new TextRun({
                 text: workTypeLabels[data.workType] || "PRODUTO MÍNIMO VIÁVEL - MVP",
                 size: 28,
-                font: "Times New Roman",
+                font: fontName,
                 allCaps: true,
               }),
             ],
