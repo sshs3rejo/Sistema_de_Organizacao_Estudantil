@@ -83,26 +83,26 @@ export function CalendarWidget() {
 
   return (
     <Card className="border-border/50 bg-card/50">
-      <CardHeader className="pb-2">
+      <CardHeader className="p-3 pb-0">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Calendar className="h-5 w-5 text-primary" />
-            Calendario 2026.1
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Calendar className="h-4 w-4 text-primary" />
+            Calendário 2026.1
           </CardTitle>
         </div>
-        <div className="flex items-center justify-between pt-2">
-          <Button variant="ghost" size="icon" onClick={prevMonth}>
-            <ChevronLeft className="h-4 w-4" />
+        <div className="flex items-center justify-between pt-1">
+          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={prevMonth}>
+            <ChevronLeft className="h-3 w-3" />
           </Button>
-          <span className="font-semibold">
+          <span className="text-sm font-semibold">
             {MONTHS[currentMonth]} {currentYear}
           </span>
-          <Button variant="ghost" size="icon" onClick={nextMonth}>
-            <ChevronRight className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={nextMonth}>
+            <ChevronRight className="h-3 w-3" />
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-3">
         <div className="grid grid-cols-7 gap-1 text-center">
           {WEEKDAYS.map((day) => (
             <div key={day} className="py-2 text-xs font-medium text-muted-foreground">

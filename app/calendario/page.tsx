@@ -82,9 +82,9 @@ export default function CalendarioPage() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
+        <div className="grid gap-8 lg:grid-cols-[1fr_400px] items-start">
           {/* Calendar Widget */}
-          <div>
+          <div className="mx-auto w-full lg:mx-0 lg:max-w-[700px]">
             <CalendarWidget />
           </div>
 
