@@ -19,7 +19,7 @@ import {
 } from "docx"
 import { saveAs } from "file-saver"
 import type { CoverData } from "@/types/cover"
-import { workTypeLabels } from "@/types/cover"
+import { getTitlePageDescription, workTypeLabels } from "@/types/cover"
 
 // UniFacema brand colors
 const UNIFACEMA_BLUE = "1E3A5F"
@@ -43,7 +43,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
   }
 
   const isTCC = data.workType === "tcc"
-  const fontName = data.fontFamily === "arial" ? "Arial" : fontName
+  const fontName = data.fontFamily === "arial" ? "Arial" : "Times New Roman"
 
   // Create background image for every page (via Header)
   const backgroundParagraph = timbreBuffer 
@@ -168,9 +168,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
     : null
 
   // Description for title page
-  const descriptionText = isTCC
-    ? `Trabalho de Conclusão de Curso apresentado ao Curso de ${data.courseName} do ${data.institutionName}, como requisito parcial para obtenção do título de Tecnólogo em ${data.courseName.split(" ").slice(-2).join(" ")}.`
-    : `${workTypeLabels[data.workType] || "Trabalho"} submetido à coordenação do curso de ${data.courseName} do ${data.institutionName} para a obtenção de nota na disciplina de ${data.discipline || "[Disciplina]"}.`
+  const descriptionText = getTitlePageDescription(data)
 
   const descriptionParagraph = new Paragraph({
     alignment: AlignmentType.JUSTIFIED,
@@ -282,7 +280,7 @@ export async function generateDocx(data: CoverData, logoBase64?: string) {
             alignment: AlignmentType.CENTER,
             children: [
               new TextRun({
-                text: workTypeLabels[data.workType] || "PRODUTO MÍNIMO VIÁVEL - MVP",
+                text: workTypeLabels[data.workType],
                 size: 28,
                 font: fontName,
                 allCaps: true,

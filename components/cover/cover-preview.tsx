@@ -2,7 +2,7 @@
 
 import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from "react"
 import type { CoverData } from "@/types/cover"
-import { workTypeLabels } from "@/types/cover"
+import { getTitlePageDescription, workTypeLabels } from "@/types/cover"
 
 /** Largura de referência da prévia (A4 ~96dpi); o conteúdo escala para caber no container. */
 const DESIGN_W = 595
@@ -85,7 +85,7 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
               <div className="my-auto flex flex-col gap-12 text-center">
                 <div className="space-y-2">
                   <p className="uppercase tracking-widest text-gray-600" style={{ fontSize: "14px" }}>
-                    {workTypeLabels[data.workType] || "PRODUTO MÍNIMO VIÁVEL - MVP"}
+                    {workTypeLabels[data.workType]}
                   </p>
                 </div>
 
@@ -138,20 +138,7 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
               {/* Description Block */}
               <div className="my-8 ml-auto w-[65%] text-justify">
                 <p style={{ fontSize: "12px", lineHeight: "1.5" }}>
-                  {isTCC ? (
-                    <>
-                      Trabalho de Conclusao de Curso apresentado ao Curso de{" "}
-                      {data.courseName} do {data.institutionName}, como requisito
-                      parcial para obtencao do titulo de Tecnologo em{" "}
-                      {data.courseName.split(" ").slice(-2).join(" ")}.
-                    </>
-                  ) : (
-                    <>
-                      {workTypeLabels[data.workType]} submetido à coordenação do curso de{" "}
-                      {data.courseName} do {data.institutionName} para a obtenção de nota na disciplina de{" "}
-                      {data.discipline || "[Disciplina]"}.
-                    </>
-                  )}
+                  {getTitlePageDescription(data)}
                 </p>
                 {(data.advisor || data.professor || data.coadvisor) && (
                   <div className="mt-4 space-y-1" style={{ fontSize: "12px" }}>

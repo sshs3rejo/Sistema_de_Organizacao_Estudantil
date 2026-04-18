@@ -45,7 +45,7 @@ export function CoverForm({
               id="institutionName"
               value={data.institutionName}
               onChange={(e) => updateField("institutionName", e.target.value)}
-              placeholder="CENTRO UNIVERSITÁRIO UNIFACEMA"
+              placeholder="CENTRO UNIVERSITÁRIO DE CIÊNCIAS E TECNOLOGIAS DO MARANHÃO"
             />
           </div>
           <div className="space-y-2">
