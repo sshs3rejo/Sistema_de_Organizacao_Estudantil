@@ -52,9 +52,9 @@ export function CoverGenerator() {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-2">
+    <div className="grid min-w-0 gap-8 lg:grid-cols-2">
       {/* Form Section */}
-      <div className="space-y-6">
+      <div className="min-w-0 space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Preencha os Dados</h2>
         </div>
@@ -68,17 +68,21 @@ export function CoverGenerator() {
       </div>
 
       {/* Preview Section */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="min-w-0 space-y-6">
+        <div className="flex min-w-0 items-center justify-between gap-2">
           <h2 className="text-xl font-semibold">Pre-visualizacao</h2>
-          <Button onClick={handleDownload} className="gap-2">
+          <Button onClick={handleDownload} className="shrink-0 gap-2">
             <FileText className="h-4 w-4" />
             Baixar DOCX
           </Button>
         </div>
 
-        <Tabs value={activePreview} onValueChange={(v) => setActivePreview(v as "cover" | "titlePage")}>
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs
+          value={activePreview}
+          onValueChange={(v) => setActivePreview(v as "cover" | "titlePage")}
+          className="min-w-0"
+        >
+          <TabsList className="grid w-full min-w-0 grid-cols-2">
             <TabsTrigger value="cover" className="gap-2">
               <FileText className="h-4 w-4" />
               Capa
@@ -89,14 +93,14 @@ export function CoverGenerator() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="cover" className="mt-4">
-            <div className="overflow-hidden rounded-lg border border-border/50 bg-muted/20 p-4">
+          <TabsContent value="cover" className="mt-4 min-w-0">
+            <div className="min-w-0 overflow-hidden rounded-lg border border-border/50 bg-muted/20 p-4">
               <CoverPreview ref={coverRef} data={coverData} type="cover" />
             </div>
           </TabsContent>
 
-          <TabsContent value="titlePage" className="mt-4">
-            <div className="overflow-hidden rounded-lg border border-border/50 bg-muted/20 p-4">
+          <TabsContent value="titlePage" className="mt-4 min-w-0">
+            <div className="min-w-0 overflow-hidden rounded-lg border border-border/50 bg-muted/20 p-4">
               <CoverPreview ref={titlePageRef} data={coverData} type="titlePage" />
             </div>
           </TabsContent>

@@ -1,8 +1,12 @@
 "use client"
 
-import { forwardRef } from "react"
+import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from "react"
 import type { CoverData } from "@/types/cover"
 import { workTypeLabels } from "@/types/cover"
+
+/** Largura de referência da prévia (A4 ~96dpi); o conteúdo escala para caber no container. */
+const DESIGN_W = 595
+const DESIGN_H = (DESIGN_W * 297) / 210
 
 interface CoverPreviewProps {
   data: CoverData
@@ -12,18 +16,50 @@ interface CoverPreviewProps {
 export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
   function CoverPreview({ data, type }, ref) {
     const isTCC = data.workType === "tcc"
+    const containerRef = useRef<HTMLDivElement | null>(null)
+    const [scale, setScale] = useState(1)
+
+    const setRefs = useCallback(
+      (node: HTMLDivElement | null) => {
+        containerRef.current = node
+        if (typeof ref === "function") ref(node)
+        else if (ref) ref.current = node
+      },
+      [ref]
+    )
+
+    useLayoutEffect(() => {
+      const el = containerRef.current
+      if (!el) return
+      const update = () => {
+        const w = el.getBoundingClientRect().width
+        if (w > 0) setScale(w / DESIGN_W)
+      }
+      update()
+      requestAnimationFrame(() => requestAnimationFrame(update))
+      const ro = new ResizeObserver(update)
+      ro.observe(el)
+      return () => ro.disconnect()
+    }, [])
 
     return (
       <div
-        ref={ref}
-        className="mx-auto aspect-[210/297] w-full max-w-[595px] bg-white text-black shadow-2xl"
-        style={{
-          fontFamily: data.fontFamily === "arial" ? "Arial, sans-serif" : "Times New Roman, serif",
-          backgroundImage: "url('/assets/timbre.png')",
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-        }}
+        ref={setRefs}
+        className="relative mx-auto aspect-[210/297] w-full min-w-0 max-w-[min(100%,595px)] overflow-hidden bg-white text-black shadow-2xl"
       >
+        <div
+          className="absolute left-0 top-0 origin-top-left bg-white text-black shadow-none"
+          style={{
+            width: DESIGN_W,
+            height: DESIGN_H,
+            transform: `scale(${scale})`,
+            fontFamily:
+              data.fontFamily === "arial" ? "Arial, sans-serif" : "Times New Roman, serif",
+            backgroundImage: "url('/assets/timbre.png')",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
         {/* A4 Page Container */}
         <div 
           className="relative flex h-full w-full flex-col"
@@ -140,6 +176,7 @@ export const CoverPreview = forwardRef<HTMLDivElement, CoverPreviewProps>(
             </p>
             <p style={{ fontSize: "14px" }}>{data.year}</p>
           </div>
+        </div>
         </div>
       </div>
     )
