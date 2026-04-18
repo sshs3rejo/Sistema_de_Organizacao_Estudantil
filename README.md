@@ -43,7 +43,7 @@
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/Sistema_de_Organizacao_Estudantil.git
+git clone https://github.com/sshs3rejo/Sistema_de_Organizacao_Estudantil.git
 cd Sistema_de_Organizacao_Estudantil
 
 # 2. Instale as dependências
