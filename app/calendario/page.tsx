@@ -1,29 +1,27 @@
-import { Metadata } from "next"
+"use client"
+
+import { useState, useEffect } from "react"
 import { CalendarWidget } from "@/components/calendar/calendar-widget"
 import { AcademicNotifications } from "@/components/calendar/academic-notifications"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Bell, Calendar, Info } from "lucide-react"
 import Link from "next/link"
-import { academicCalendar2026_1 } from "@/lib/academic-calendar-data"
-
-export const metadata: Metadata = {
-  title: "Calendário Acadêmico - Organização Estudantil",
-  description: "Acompanhe as datas importantes do seu semestre.",
-}
+import { academicCalendar2026_1, getUpcomingEvents } from "@/lib/academic-calendar-data"
+import { AcademicEvent } from "@/types/calendar"
 
 export default function CalendarioPage() {
-  const today = new Date()
-  
+  const [today, setToday] = useState<Date>(new Date())
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setToday(new Date())
+    setMounted(true)
+  }, [])
+
   // Get upcoming events (next 30 days)
-  const upcomingEvents = academicCalendar2026_1
-    .filter((event) => {
-      const eventDate = new Date(event.date)
-      const diffTime = eventDate.getTime() - today.getTime()
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-      return diffDays >= 0 && diffDays <= 30
-    })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  const upcomingEvents = getUpcomingEvents(30)
+
 
   const getEventTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
@@ -55,6 +53,18 @@ export default function CalendarioPage() {
       day: "numeric",
       month: "long",
     }).format(date)
+  }
+
+  // Avoid hydration mismatch by rendering a placeholder or the same initial state until mounted
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Calendar className="h-12 w-12 text-primary animate-pulse" />
+          <p className="text-muted-foreground">Carregando calendário...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -109,7 +119,8 @@ export default function CalendarioPage() {
                   <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
                     {upcomingEvents.map((event, index) => {
                       const eventDate = new Date(event.date)
-                      const isToday = eventDate.toDateString() === today.toDateString()
+                      const isToday = eventDate.toDateString() === today.toDateString() || 
+                                     (event.endDate && today >= eventDate && today <= new Date(event.endDate))
                       
                       return (
                         <div
@@ -127,6 +138,7 @@ export default function CalendarioPage() {
                               </p>
                               <p className="text-xs text-muted-foreground mt-1 capitalize">
                                 {formatDate(eventDate)}
+                                {event.endDate && ` - ${formatDate(new Date(event.endDate))}`}
                               </p>
                             </div>
                             <span
@@ -182,3 +194,4 @@ export default function CalendarioPage() {
     </div>
   )
 }
+

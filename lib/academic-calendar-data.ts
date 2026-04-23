@@ -118,15 +118,27 @@ export function getUpcomingEvents(days: number = 7): AcademicEvent[] {
   
   const futureDate = new Date(today)
   futureDate.setDate(futureDate.getDate() + days)
+  futureDate.setHours(23, 59, 59, 999)
   
   return academicCalendar2026_1
     .filter(event => {
       const eventDate = new Date(event.date)
       eventDate.setHours(0, 0, 0, 0)
-      return eventDate >= today && eventDate <= futureDate
+      
+      const eventEndDate = event.endDate ? new Date(event.endDate) : eventDate
+      eventEndDate.setHours(23, 59, 59, 999)
+      
+      // Um evento é relevante se:
+      // 1. Ainda não terminou (endDate >= hoje)
+      // 2. Começa dentro do período solicitado (eventDate <= futureDate)
+      const isStillHappening = eventEndDate >= today
+      const startsInPeriod = eventDate <= futureDate
+      
+      return isStillHappening && startsInPeriod
     })
     .sort((a, b) => a.date.getTime() - b.date.getTime())
 }
+
 
 export function getTodayEvents(): AcademicEvent[] {
   const today = new Date()
